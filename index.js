@@ -674,6 +674,7 @@ app.get('/quote', async (req, res) => {
     }
 });
 
+
 // Task Endpoints
 app.post('/tasks', verifyToken, async (req, res) => {
     try {
@@ -801,7 +802,7 @@ app.get('/goals', verifyToken, async (req, res) => {
     try {
         const user = await User.findOne({ email: req.user.email });
         if (!user) return res.status(404).json({ error: 'User not found' });
-        const goals = await Task.find({ userId: user._id });
+        const goals = await Goal.find({ userId: user._id });
         res.json(goals);
     } catch (error) {
         console.error('Fetch goals error:', error);
