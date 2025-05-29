@@ -10,7 +10,20 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:5173' }));
+// app.use(cors({ origin: 'http://localhost:5173' }));
+const allowedOrigins = ['http://localhost:5173', 'https://auratasks-fb8eb.web.app'];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true // Optional: set to true if you're sending cookies or auth headers
+}));
 app.use(express.json());
 
 // JWT Secret Key
